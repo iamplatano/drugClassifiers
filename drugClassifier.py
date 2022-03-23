@@ -51,25 +51,25 @@ for i in range(len(test_labels_lines)):
 test_label_matrix = np.reshape(test_label_matrix,(350,1))
 
 
-threshold_prob = 0.8
-sel = VarianceThreshold(threshold_prob*(1-threshold_prob))
-sel = sel.fit_transform(train_matrix)
-print(sel)
+
 # train_labels = np.reshape(train_matrix_labels,(800,1)) # Reshapes True labels into a 2d array
 
 
 # print(labels)
-X_train, x_test, y_train,y_test= train_test_split(sel,train_matrix_labels,test_size=0.4, random_state=8 )
+X_train, x_test, y_train,y_test= train_test_split(train_matrix,train_matrix_labels,test_size=0.4,random_state=8 )
 
 # Build Decision Tree Classifier and fit using binary train_matrix and label train_matrix
 dtc = DecisionTreeClassifier()
 dtc = dtc.fit(train_matrix,train_matrix_labels)
-y_pred = dtc.predict(x_test)
+importance = dtc.feature_importances_
+for i,v in enumerate(importance):
+    if v>0:
+	    print('Feature: %0d, Score: %.5f' % (i,v))
 
 
 
 # Information about the tree
-print("number of leaves ",dtc.get_n_leaves())
-print("depth of the tree ",dtc.get_depth())
+# print("number of leaves ",dtc.get_n_leaves())
+# print("depth of the tree ",dtc.get_depth())
 # print(len(test_matrix),len(test_label_matrix))
-print(dtc.score(test_matrix,test_label_matrix))
+# print(dtc.score(test_matrix,test_label_matrix))tue
